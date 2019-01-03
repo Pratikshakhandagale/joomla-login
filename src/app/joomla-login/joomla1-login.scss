@@ -1,0 +1,29 @@
+page-login 
+{  
+    .item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input, .item-md.item-label-stacked .text-input, .item-md.item-label-floating .text-input {
+        margin-top: 26px;
+        margin-bottom: 7px;
+        font-weight: 600 !important;
+    }
+    .es-title {
+        margin-top: 20% !important;
+        margin-bottom: 5%;
+    }
+    .img-logo {
+        height: 15vw;
+        width: 15vw;
+        margin-bottom: 8px;
+    }
+    img {
+        display: block;
+        margin: 0 auto;
+        width:70%;
+    }
+    .toolbar-title-md, .toolbar-title-ios {
+        text-align: center!important;	
+        font-size: 2.0rem; 
+    }
+    ion-input {
+        border-bottom: 0.5px solid map-get($colors, primary);
+    }
+}
