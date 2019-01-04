@@ -1,6 +1,6 @@
 {
   "name": "joomla-login",
-  "version": "0.0.26",
+  "version": "0.0.37",
   "description": "This npm module is used for the login in the app",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,6 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
-    "@angular/forms": "^6.1.2"
+    "@angular/forms": "^6.0.3"
   }
 }

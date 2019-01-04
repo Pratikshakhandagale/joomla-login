@@ -9,7 +9,7 @@ const HTML_TEMPLATE = `
 </ion-item>
 <div class="es-title">
   <img class="img-logo" src="assets/icon/icon.png" />
-  <ion-title color="color-white">Welcome to Vowel</ion-title>
+  <ion-title color="color-white">Welcome to {{appName}}</ion-title>
 </div>
 <ion-list no-lines>
     <ion-item [hidden]="!isCustom">
@@ -21,8 +21,12 @@ const HTML_TEMPLATE = `
     </ion-item>
 
     <ion-item>
-      <ion-input #input placeholder="Password" [(ngModel)]="password" type="password" required></ion-input>
-    </ion-item>
+      <ion-input #input placeholder="Password" [(ngModel)]="password" type="{{hidePassword}}" required></ion-input>
+      <button (click)="showPassword()" type="button" ion-button item-right large clear>
+            <ion-icon color="color-white" name="{{passwordIcon}}"></ion-icon>						
+      </button>
+   </ion-item>
+
     <ion-row padding>
       <button text-capitalize type="submit" (click)="doLogin()" ion-button block color="clr-button">Login</button>
     </ion-row>
@@ -57,6 +61,24 @@ img {
 ion-input {
   border-bottom: 0.5px solid map-get($colors, primary);
 }
+.button-large-md, .button-large-ios {
+  height: 1.8em !important;	
+}
+.scroll-content{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+  contain: size style layout;
+  padding-bottom: 0 !important;
+}
 `;
 
 @IonicPage()
@@ -73,7 +95,10 @@ export class JoomlaLoginPage {
   username: string = '';
   password: string = '';
   siteurl: string = '';
-
+  loginUrl:string = "/index.php?option=com_api&app=users&resource=login&format=raw";
+  appName: string ='EasySocial';
+  passwordIcon: string = 'eye-off';
+	hidePassword: string = 'password';
   constructor(
     public toastCtrl: ToastController,
     public navCtrl: NavController,
@@ -88,6 +113,8 @@ export class JoomlaLoginPage {
           this.isCustom = false;
           this.apiBase = data['custom_app']['LOGINURL'];
         }
+        this.appName = data['custom_app']['APPNAME'];
+        this.loginUrl = data['custom_app']['LOGIN_API'];
       }
     )
   }
@@ -102,7 +129,10 @@ export class JoomlaLoginPage {
     this.siteurl = 'http://app.cloudaccess.host';
   }
 
-
+  showPassword() {
+		this.hidePassword = this.hidePassword === 'password' ? 'text' : 'password';
+		this.passwordIcon = this.passwordIcon === 'eye' ? 'eye-off' : 'eye';		
+	}
    doLogin() {
     if (!this.siteurl) {
       this.presentToast("Site url can't be blank");
@@ -121,7 +151,7 @@ export class JoomlaLoginPage {
     this.siteurl = (this.isCustom) ? this.siteurl : this.apiBase;
     //this.navCtrl.setRoot(HomePage);
 
-    let url = this.siteurl + "/index.php?option=com_api&app=users&resource=login&format=raw";
+    let url = this.siteurl + this.loginUrl; 
     let datatobesend = 'username=' + this.username + '&password=' + encodeURIComponent(this.password);
 
     this.LoggerService.getConfigs().then(data => {

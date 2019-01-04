@@ -1,25 +1,28 @@
-  <ion-content class="back-image">
-      <ion-item no-lines [hidden]="!isCustom" float-end>
-        <button item-right class="btn-demo" type="submit" (click)="demoLogin()" ion-button text-capitalize outline color="color-white">Demo</button>
-      </ion-item>
-      <div class="es-title">
-        <img class="img-logo" src="assets/icon/icon.png" />
-        <ion-title color="color-white">Welcome to Vowel</ion-title>
-      </div>
-      <ion-list no-lines>
-          <ion-item [hidden]="!isCustom">
-            <ion-input placeholder="Site URL" [(ngModel)]="siteurl" type="url" required></ion-input>
-          </ion-item>
-    
-          <ion-item>
-            <ion-input outline placeholder="Username" [(ngModel)]="username" type="text" required></ion-input>
-          </ion-item>
-    
-          <ion-item>
-            <ion-input #input placeholder="Password" [(ngModel)]="password" type="password" required></ion-input>
-          </ion-item>
-          <ion-row padding>
-            <button text-capitalize type="submit" (click)="doLogin()" ion-button block color="clr-button">Login</button>
-          </ion-row>
-      </ion-list>
-    </ion-content>
+<ion-content class="back-image">
+  <ion-item no-lines [hidden]="!isCustom" float-end>
+    <button item-right class="btn-demo" type="submit" (click)="demoLogin()" ion-button text-capitalize outline color="color-white">Demo</button>
+  </ion-item>
+  <div class="es-title">
+    <img class="img-logo" src="assets/icon/icon.png" />
+    <ion-title color="color-white">Welcome to {{appName}}</ion-title>
+  </div>
+  <ion-list no-lines>
+    <ion-item [hidden]="!isCustom">
+      <ion-input placeholder="Site URL" [(ngModel)]="siteurl" type="url" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input outline placeholder="Username" [(ngModel)]="username" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input #input placeholder="Password" [(ngModel)]="password" type="{{password}}" required></ion-input>
+      <button no-lines (click)="showPassword()" type="button" ion-button item-right large clear>
+                <ion-icon color="color-white" name="{{passwordIcon}}"></ion-icon>						
+                  </button>
+    </ion-item>
+    <ion-row padding>
+      <button text-capitalize type="submit" (click)="doLogin()" ion-button block color="clr-button">Login</button>
+    </ion-row>
+  </ion-list>
+</ion-content>

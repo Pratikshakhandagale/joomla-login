@@ -45,8 +45,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { LoggerService } from './../logger.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, Events } from 'ionic-angular';
-var HTML_TEMPLATE = "\n<ion-content class=\"back-image\">\n<ion-item no-lines [hidden]=\"!isCustom\" float-end>\n  <button item-right class=\"btn-demo\" type=\"submit\" (click)=\"demoLogin()\" ion-button text-capitalize outline color=\"color-white\">Demo</button>\n</ion-item>\n<div class=\"es-title\">\n  <img class=\"img-logo\" src=\"assets/icon/icon.png\" />\n  <ion-title color=\"color-white\">Welcome to Vowel</ion-title>\n</div>\n<ion-list no-lines>\n    <ion-item [hidden]=\"!isCustom\">\n      <ion-input placeholder=\"Site URL\" [(ngModel)]=\"siteurl\" type=\"url\" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input outline placeholder=\"Username\" [(ngModel)]=\"username\" type=\"text\" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input #input placeholder=\"Password\" [(ngModel)]=\"password\" type=\"password\" required></ion-input>\n    </ion-item>\n    <ion-row padding>\n      <button text-capitalize type=\"submit\" (click)=\"doLogin()\" ion-button block color=\"clr-button\">Login</button>\n    </ion-row>\n</ion-list>\n</ion-content>\n";
-var CSS_STYLE = "\n.item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input, .item-md.item-label-stacked .text-input, .item-md.item-label-floating .text-input {\n  margin-top: 26px;\n  margin-bottom: 7px;\n  font-weight: 600 !important;\n}\n.es-title {\n  margin-top: 20% !important;\n  margin-bottom: 5%;\n}\n.img-logo {\n  height: 15vw;\n  width: 15vw;\n  margin-bottom: 8px;\n}\nimg {\n  display: block;\n  margin: 0 auto;\n  width:70%;\n}\n.toolbar-title-md, .toolbar-title-ios {\n  text-align: center!important;\t\n  font-size: 2.0rem; \n}\nion-input {\n  border-bottom: 0.5px solid map-get($colors, primary);\n}\n";
+var HTML_TEMPLATE = "\n<ion-content class=\"back-image\">\n<ion-item no-lines [hidden]=\"!isCustom\" float-end>\n  <button item-right class=\"btn-demo\" type=\"submit\" (click)=\"demoLogin()\" ion-button text-capitalize outline color=\"color-white\">Demo</button>\n</ion-item>\n<div class=\"es-title\">\n  <img class=\"img-logo\" src=\"assets/icon/icon.png\" />\n  <ion-title color=\"color-white\">Welcome to {{appName}}</ion-title>\n</div>\n<ion-list no-lines>\n    <ion-item [hidden]=\"!isCustom\">\n      <ion-input placeholder=\"Site URL\" [(ngModel)]=\"siteurl\" type=\"url\" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input outline placeholder=\"Username\" [(ngModel)]=\"username\" type=\"text\" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-input #input placeholder=\"Password\" [(ngModel)]=\"password\" type=\"{{hidePassword}}\" required></ion-input>\n      <button (click)=\"showPassword()\" type=\"button\" ion-button item-right large clear>\n            <ion-icon color=\"color-white\" name=\"{{passwordIcon}}\"></ion-icon>\t\t\t\t\t\t\n      </button>\n   </ion-item>\n\n    <ion-row padding>\n      <button text-capitalize type=\"submit\" (click)=\"doLogin()\" ion-button block color=\"clr-button\">Login</button>\n    </ion-row>\n</ion-list>\n</ion-content>\n";
+var CSS_STYLE = "\n.item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input, .item-md.item-label-stacked .text-input, .item-md.item-label-floating .text-input {\n  margin-top: 26px;\n  margin-bottom: 7px;\n  font-weight: 600 !important;\n}\n.es-title {\n  margin-top: 20% !important;\n  margin-bottom: 5%;\n}\n.img-logo {\n  height: 15vw;\n  width: 15vw;\n  margin-bottom: 8px;\n}\nimg {\n  display: block;\n  margin: 0 auto;\n  width:70%;\n}\n.toolbar-title-md, .toolbar-title-ios {\n  text-align: center!important;\t\n  font-size: 2.0rem; \n}\nion-input {\n  border-bottom: 0.5px solid map-get($colors, primary);\n}\n.button-large-md, .button-large-ios {\n  height: 1.8em !important;\t\n}\n.scroll-content{\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 1;\n  display: block;\n  overflow-x: hidden;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n  will-change: scroll-position;\n  contain: size style layout;\n  padding-bottom: 0 !important;\n}\n";
 var JoomlaLoginPage = /** @class */ (function () {
     function JoomlaLoginPage(toastCtrl, navCtrl, navParams, LoggerService, events) {
         var _this = this;
@@ -59,11 +59,17 @@ var JoomlaLoginPage = /** @class */ (function () {
         this.username = '';
         this.password = '';
         this.siteurl = '';
+        this.loginUrl = "/index.php?option=com_api&app=users&resource=login&format=raw";
+        this.appName = 'EasySocial';
+        this.passwordIcon = 'eye-off';
+        this.hidePassword = 'password';
         this.LoggerService.getConfigs().then(function (data) {
             if (data['custom_app']['LOGINURL'].length > 0) {
                 _this.isCustom = false;
                 _this.apiBase = data['custom_app']['LOGINURL'];
             }
+            _this.appName = data['custom_app']['APPNAME'];
+            _this.loginUrl = data['custom_app']['LOGIN_API'];
         });
     }
     JoomlaLoginPage.prototype.ionViewDidLoad = function () {
@@ -73,6 +79,10 @@ var JoomlaLoginPage = /** @class */ (function () {
         this.username = 'Ruby';
         this.password = "abcd1234";
         this.siteurl = 'http://app.cloudaccess.host';
+    };
+    JoomlaLoginPage.prototype.showPassword = function () {
+        this.hidePassword = this.hidePassword === 'password' ? 'text' : 'password';
+        this.passwordIcon = this.passwordIcon === 'eye' ? 'eye-off' : 'eye';
     };
     JoomlaLoginPage.prototype.doLogin = function () {
         if (!this.siteurl) {
@@ -99,7 +109,7 @@ var JoomlaLoginPage = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         this.siteurl = (this.isCustom) ? this.siteurl : this.apiBase;
-                        url = this.siteurl + "/index.php?option=com_api&app=users&resource=login&format=raw";
+                        url = this.siteurl + this.loginUrl;
                         datatobesend = 'username=' + this.username + '&password=' + encodeURIComponent(this.password);
                         this.LoggerService.getConfigs().then(function (data) {
                             console.log(' data ', data);
@@ -109,7 +119,7 @@ var JoomlaLoginPage = /** @class */ (function () {
                                     _this.events.publish('user:loggin', data);
                                 }
                                 else {
-                                    _this.presentToast('Invalid login credentials');
+                                    _this.presentToast(data['err_msg']);
                                 }
                             }, function (err) {
                                 console.log('err ', err);
